@@ -1,0 +1,16 @@
+[
+{
+  "modid": "mcmcp",
+  "name": "Minecraft MCP",
+  "description": "Embarque un serveur MCP (Model Context Protocol) dans Minecraft Forge 1.12.2 pour piloter la partie solo depuis un LLM externe (Claude Desktop, agent custom) via JSON-RPC 2.0.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["mushurelie"],
+  "credits": "Anthropic (Model Context Protocol)",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

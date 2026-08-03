@@ -1,8 +1,9 @@
-# Gradle / ForgeGradle
-.gradle/
-build/
-run/
-out/
+# Gradle / ForgeGradle (chaque module de version a son propre wrapper/build)
+**/.gradle/
+**/build/
+**/run/
+**/run-data/
+**/out/
 
 # IDE
 .idea/
@@ -15,3 +16,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Config locale Claude Code (specifique a la machine, pas du contenu de projet)
+.claude/

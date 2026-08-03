@@ -1,0 +1,62 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '2.3-SNAPSHOT', changing: true
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = project.mod_version
+group = "com.mushurelie.mcmcp"
+archivesBaseName = "minecraft-mcp"
+
+sourceCompatibility = targetCompatibility = '1.8'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+// Code partage (protocole MCP / JSON-RPC / HTTP) entre toutes les versions Minecraft du monorepo.
+// Compile directement les sources de ../common, sans publication d'artefact intermediaire :
+// ForgeGradle 2.3 (Gradle ancien) et les ForgeGradle modernes (1.16.5+) ne peuvent pas cohabiter
+// dans un seul build Gradle multi-module classique, d'ou ce partage par source plutot que par module.
+sourceSets {
+    main {
+        java {
+            srcDir '../common/src/main/java'
+        }
+    }
+}
+
+minecraft {
+    version = "1.12.2-14.23.5.2847"
+    runDir = "run"
+    // Mappings MCP (stable_39). A ne pas confondre avec le "MCP" du projet (Model Context Protocol).
+    mappings = "stable_39"
+    useDepAts = true
+}
+
+dependencies {
+    // Aucune dependance externe : Gson, Apache Commons et Guava sont deja fournis par Minecraft/Forge.
+    // com.sun.net.httpserver.HttpServer fait partie du JDK 8, aucune dependance necessaire non plus.
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
