@@ -1,0 +1,8 @@
+{
+    "pack": {
+        "description": "mcmcp resources",
+        "pack_format": 6,
+        "forge:resource_pack_format": 6,
+        "forge:data_pack_format": 6
+    }
+}
