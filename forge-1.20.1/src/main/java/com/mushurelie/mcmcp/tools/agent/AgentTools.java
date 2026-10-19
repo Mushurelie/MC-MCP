@@ -18,6 +18,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.InteractionResult;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
@@ -306,7 +310,6 @@ public final class AgentTools {
                     throw new JsonRpcException(JsonRpcException.SERVER_ERROR, "Aucun bloc tenu en main principale");
                 }
                 BlockItem blockItem = (BlockItem) held.getItem();
-                Block block = blockItem.getBlock();
 
                 if (!player.level().isEmptyBlock(placeAt)) {
                     JsonObject result = new JsonObject();
@@ -315,13 +318,17 @@ public final class AgentTools {
                     return result;
                 }
 
-                player.level().setBlock(placeAt, block.defaultBlockState(), 3);
-                if (!player.getAbilities().instabuild) {
-                    held.shrink(1);
-                }
+                // Vrai placement joueur (BlockItem.place) : orientation selon le regard du joueur,
+                // setPlacedBy (ecrans CC qui s'assemblent, proprietaire SecurityCraft...), consommation de l'item.
+                Vec3 hitLocation = Vec3.atCenterOf(anchor).add(
+                    facing.getStepX() * 0.5, facing.getStepY() * 0.5, facing.getStepZ() * 0.5);
+                BlockHitResult hit = new BlockHitResult(hitLocation, facing, anchor, false);
+                InteractionResult placement = blockItem.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, held, hit));
+
                 JsonObject result = new JsonObject();
-                result.addProperty("success", true);
+                result.addProperty("success", placement.consumesAction());
                 result.add("pos", BlockPosCodec.toJson(placeAt));
+                result.addProperty("state", player.level().getBlockState(placeAt).toString());
                 return result;
             });
         }
