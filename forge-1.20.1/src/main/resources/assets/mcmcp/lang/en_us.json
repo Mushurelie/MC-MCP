@@ -1,0 +1,11 @@
+{
+  "itemGroup.mcmcp": "Minecraft MCP",
+  "mcmcp.chat.confirm.title": "MCP request",
+  "mcmcp.chat.confirm.body": "An external tool wants to run: %s",
+  "mcmcp.chat.confirm.accept": "Accept",
+  "mcmcp.chat.confirm.reject": "Reject",
+  "mcmcp.chat.confirm.timeout": "Request timed out and was rejected",
+  "mcmcp.server.started": "MCP server started on %s:%d",
+  "mcmcp.server.stopped": "MCP server stopped",
+  "mcmcp.server.port_in_use": "Cannot start MCP server: port %d is already in use"
+}
