@@ -3,6 +3,26 @@
 Toutes les modifications notables de ce projet sont documentees dans ce
 fichier.
 
+## [Non publie]
+
+### Ajoute
+
+- Module `forge-1.20.1` (Forge 47.x, Java 17, mappings officiels) : les 49 outils
+  portes depuis 1.16.5/1.12.2 et branches dans `DefaultToolRegistryFactory`.
+- `save_structure` / `load_structure` implementes en 1.20.1 (format structure vanilla
+  `.nbt`, entites incluses, rotation et miroir) ; `load_structure` accepte aussi les
+  structures fournies par un datapack ou un mod (`namespace:nom`).
+- `set_block`, `fill_area` et `generate_shape` acceptent en 1.20.1 un etat de bloc au
+  format commande (`minecraft:oak_stairs[facing=north]`, NBT `{...}` optionnel).
+- Parametre `dimension` : accepte les dimensions de mods (`ad_astra:moon`...) en 1.20.1.
+- `screenshot` renvoie en 1.20.1 un vrai bloc image MCP ; `ContentBlock.rawContent`
+  (common) permet a un outil de fournir directement ses blocs de contenu.
+
+### Corrige
+
+- 1.20.1 : le serveur HTTP n'est plus arrete en quittant une partie (il ne pouvait
+  plus redemarrer sans relancer le jeu).
+
 ## [0.1.0] - 2026-08-03
 
 ### Ajoute

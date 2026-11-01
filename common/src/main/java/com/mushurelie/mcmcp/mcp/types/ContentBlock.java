@@ -27,8 +27,26 @@ public final class ContentBlock {
         return block;
     }
 
+    /**
+     * Cle reservee : un outil qui renvoie {"__mcpContent": [blocs...]} fournit directement
+     * ses blocs de contenu MCP (ex : une image pour screenshot) au lieu d'un JSON textuel.
+     */
+    public static final String RAW_CONTENT_KEY = "__mcpContent";
+
+    /** Resultat d'outil compose de blocs de contenu explicites (voir RAW_CONTENT_KEY). */
+    public static JsonObject rawContent(JsonArray content) {
+        JsonObject wrapper = new JsonObject();
+        wrapper.add(RAW_CONTENT_KEY, content);
+        return wrapper;
+    }
+
     /** Construit la reponse tools/call complete a partir d'un unique JSON textuel. */
     public static JsonObject fromJsonText(com.google.gson.JsonElement jsonResult) {
+        if (jsonResult != null && jsonResult.isJsonObject()
+            && jsonResult.getAsJsonObject().has(RAW_CONTENT_KEY)
+            && jsonResult.getAsJsonObject().get(RAW_CONTENT_KEY).isJsonArray()) {
+            return toolResult(jsonResult.getAsJsonObject().getAsJsonArray(RAW_CONTENT_KEY), false);
+        }
         JsonArray content = new JsonArray();
         content.add(text(jsonResult.toString()));
         return toolResult(content, false);
